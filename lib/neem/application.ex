@@ -1,20 +1,28 @@
 defmodule Neem.Application do
-  # See https://hexdocs.pm/elixir/Application.html
-  # for more information on OTP Applications
-  @moduledoc false
-
   use Application
 
   def start(_type, _args) do
-    # List all child processes to be supervised
-    children = [
-      # Starts a worker by calling: Neem.Worker.start_link(arg)
-      # {Neem.Worker, arg},
-    ]
+    import Supervisor.Spec, warn: false
 
-    # See https://hexdocs.pm/elixir/Supervisor.html
-    # for other strategies and supported options
+    start_cowboy()
+    children = []
     opts = [strategy: :one_for_one, name: Neem.Supervisor]
     Supervisor.start_link(children, opts)
+  end
+
+  def start_cowboy() do
+    route1 = {"/", Neem.Web.PageHandler, []}
+    route2 = {"/", Neem.Web.PageHandler, []}
+    
+    routes = [{:_, [route1, route2]}]
+    dispatch = :cowboy_router.compile(routes)
+
+    opts = [port: 5000]
+    env = [dispatch: dispatch]
+
+    case :cowboy.start_http(:http, 10, opts, [env: env]) do
+      {:ok, _pid} -> IO.puts "Cowboy is now running. Go to http://localhost:5000"
+      _ -> IO.puts "An error occurred when starting Cowboy server."
+    end
   end
 end
