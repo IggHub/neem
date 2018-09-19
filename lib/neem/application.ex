@@ -14,7 +14,7 @@ defmodule Neem.Application do
 
   def start_cowboy() do
     route1 = {"/images/[...]", :cowboy_static, {:priv_dir,  :neem, "static/images"}}
-    route2 = {:_, Neem.Web.PageHandler, []}
+    route2 = {:_, Garuda.CowboyHandler, Neem.Web.Router}
 
     routes = [{:_, [route1, route2]}] 
     dispatch = :cowboy_router.compile(routes)
