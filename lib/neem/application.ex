@@ -4,17 +4,19 @@ defmodule Neem.Application do
   def start(_type, _args) do
     import Supervisor.Spec, warn: false
 
-    start_cowboy()
+    start_cowboy() 
     children = []
     opts = [strategy: :one_for_one, name: Neem.Supervisor]
     Supervisor.start_link(children, opts)
   end
 
   def start_cowboy() do
-    route1 = {"/", Neem.Web.PageHandler, []}
-    route2 = {"/", Neem.Web.PageHandler, []}
-    
-    routes = [{:_, [route1, route2]}]
+    route1 = {"/", Neem.Web.PageHandler, :home}
+    route2 = {"/about", Neem.Web.PageHandler, :about}
+    route3 = {"/contact", Neem.Web.PageHandler, :contact}
+    route4 = {:_, Neem.Web.PageHandler, :not_found}
+
+    routes = [{:_, [route1, route2, route3, route4]}]
     dispatch = :cowboy_router.compile(routes)
 
     opts = [port: 5000]
