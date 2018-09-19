@@ -1,34 +1,32 @@
 defmodule Neem.Web.PageHandler do
-  # req maps to handle's req, action maps to handle's state
-  def init({:tcp, :http}, req, action) do
-   {:ok, req, action}
+  def init({:tcp, :http}, req, _opts) do
+   {:ok, req, :nostate}
   end
 
-  def handle(req, state) do
+  def handle(req, _state) do
    headers = [{"content-type", "text/html"}]
-
-   {:ok, resp} = :cowboy_req.reply(200, headers, content_for(state), req)
-   {:ok, resp, state}
+   { path, req } = :cowboy_req.path(req)
+   {:ok, resp} = :cowboy_req.reply(200, headers, content_for(path), req)
+   {:ok, resp, :nostate}
   end
 
   def terminate(_reason, _req, _state) do
    :ok
   end
 
-  # body content for different actions
-  defp content_for(:home) do
-    "<img src='/images/logo.png' /><h1>Home Page</h1>"
+  defp content_for("/") do
+    "<img src='/images/logo.png'/><h1>Home Page</h1>"
   end
 
-  defp content_for(:contact) do
-    "<img src='/images/logo.png' /><h1>Contact Page</h1>"
+  defp content_for("/contact") do
+    "<img src='/images/logo.png'/><h1>Contact Page</h1>"
   end
 
-  defp content_for(:about) do
-    "<img src='/images/logo.png' /><h1>About Page</h1>"
+  defp content_for("/about") do
+    "<img src='/images/logo.png'/><h1>About Page</h1>"
   end
 
   defp content_for(_) do
-    "<img src='/images/logo.png' /><h1>404 error</h1>"
+    "<img src='/images/logo.png'/><h1>404 error</h1>"
   end
 end
