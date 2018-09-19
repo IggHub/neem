@@ -1,4 +1,5 @@
 defmodule Neem.Web.PageHandler do
+  # req maps to handle's req, action maps to handle's state
   def init({:tcp, :http}, req, action) do
    {:ok, req, action}
   end
@@ -14,6 +15,7 @@ defmodule Neem.Web.PageHandler do
    :ok
   end
 
+  # body content for different actions
   defp content_for(:home) do
     "<img src='/images/logo.png' /><h1>Home Page</h1>"
   end
