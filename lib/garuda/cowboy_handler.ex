@@ -4,10 +4,16 @@ defmodule Garuda.CowboyHandler do
   end
 
   def handle(req, router) do
-    headers = [{"content-type", "text/html"}]
-    { path, req } = :cowboy_req.path(req)
-    body = router.call(path)
-    {:ok, resp} = :cowboy_req.reply(200, headers, body, req)
+    {path, req} = :cowboy_req.path(req)
+    conn = %Assembly.Conn{req_path: path}
+    conn = router.call(conn)
+
+    {:ok, resp} = :cowboy_req.reply(
+      conn.resp_code,
+      conn.resp_header,
+      conn.resp_body,
+      req
+    )
     {:ok, resp, router}
   end
 
