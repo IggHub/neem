@@ -1,5 +1,6 @@
 defmodule Neem.Web.Router do
   import Assembly.Conn
+  alias Neem.Web.PageController
 
   def call(conn) do
     content_for(conn.req_path, conn)
@@ -7,17 +8,17 @@ defmodule Neem.Web.Router do
   
   defp content_for("/", conn) do
     conn
-    |> put_resp_body "<img src='/images/logo.png'/><h1>Home Page</h1>"
+    |> PageController.call(:home)
   end
 
   defp content_for("/contact", conn) do
     conn 
-    |> put_resp_body "<img src='/images/logo.png'/><h1>Contact Page</h1>"
+    |> PageController.call(:contact) 
   end
 
   defp content_for("/about") do
     conn
-    |> put_resp_body "<img src='/images/logo.png'/><h1>About Page</h1>"
+    |> PageController.call(:about) 
   end
 
   defp content_for(_, conn) do
