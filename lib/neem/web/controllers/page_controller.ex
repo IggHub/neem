@@ -1,9 +1,6 @@
 defmodule Neem.Web.PageController do
   import Assembly.Conn
-
-  def call(conn, action) do
-    apply(__MODULE__, action, [conn, "Hello from Controller"])
-  end
+  import Garuda.Controller
 
   def home(conn, message) do
     conn
