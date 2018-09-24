@@ -1,5 +1,4 @@
 defmodule Garuda.Controller do
-
   defmacro __using__(_opts) do
     quote do
       def call(conn, action) do
