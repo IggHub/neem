@@ -1,6 +1,6 @@
 defmodule Neem.Web.PageController do
   import Assembly.Conn
-  import Garuda.Controller
+  use Garuda.Controller
 
   def home(conn, message) do
     conn
