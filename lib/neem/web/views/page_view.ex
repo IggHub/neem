@@ -1,3 +1,3 @@
 defmodule Neem.Web.PageView do
-  use Garuda.View
+  use Garuda.View, path: "lib/neem/web/templates/page"
 end

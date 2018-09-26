@@ -7,6 +7,6 @@ defmodule Neem.Web.PageController do
   end
 
   def about(conn, _) do
-    render(conn, "about.html", nil)
+    render(conn, "about.html", [])
   end
 end
